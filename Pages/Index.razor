@@ -2,23 +2,23 @@
 
 <PageTitle>Menu</PageTitle>
 
-<center>
-	<h1>Menu de Pizzas!</h1>
-</center>
+<h1 style="text-align:center;">Menu de Pizzas!</h1>
+<br>
+<br>
 
 @foreach (var pizza in estados.Menu.Pizzas)
 {
 	<div class="row">
 		<div class="col">
-			@pizza.Nombre
+            <strong>@pizza?.Nombre</strong>
 		</div>
 		<div class="col text-right">@($"{pizza.Precio:0.00}")</div>
 		<div class="col">
-			<img src="@PicanteImagenes(pizza.Picante)" alt="@pizza.Picante" />
+            <img src="https://i.pinimg.com/236x/5e/5c/06/5e5c06afeed213a39e8e7df49ac263a0.jpg" alt="@pizza.Picante" />
 		</div>
 		<div class="col">
 			<button class="btn btn-success pl-4 pr-4"
-			@onclick="@(() => AgregarCesta(pizza))">
+			@onclick="@(() => AgregarALaCesta(pizza))">
 				Ordenar
 			</button>
 		</div>
@@ -33,7 +33,7 @@
     {
         <div class="row mb-2">
             <div class="col">
-                @pizza?.Nombre
+                <strong>@pizza?.Nombre</strong>
             </div>
             <div class="col text-right">
                 @($"{pizza?.Precio:0.00}")
@@ -42,7 +42,7 @@
             <div class="col"></div>
             <div class="col">
                 <button class="btn btn-danger"
-                @onclick="@(() => RemoverCesta(pos))">
+                @onclick="@(() => RemoverDeLaCesta(pos))">
                     Eliminar Pedido
                 </button>
             </div>
@@ -64,25 +64,83 @@
         <div class="col"> </div>
     </div>
 }
-<h5>Favor ingresar los detalles de su orden</h5>
+<h5>Favor Ingresar Sus Datos</h5>
+
+<EditForm Model="@estados.cestaDCompras.clientes" OnValidSubmit="RealizarOrden">
+<DataAnnotationsValidator />
+<fieldset>
+     <div class="row mb-2">
+        <label class="col-2" for="Nombre">Nombre</label>
+        <InputText class="form-control col-6"
+         @bind-Value="@estados.cestaDCompras.clientes.Nombre"/>
+      </div>
+
+      <div class="row mb-2">
+            <label class="col-2" for="calle">Calle:</label>
+            <InputText class="form-control col-6" placeholder="Nombre de la calle y numero de la casa" id="calle" @bind-Value="estados.cestaDCompras.clientes.Calle" />
+            <ValidationMessage For="@(() => estados.cestaDCompras.clientes.Calle)" />
+      </div>
+
+        <div class="row mb-2">
+            <label class="col-2" for="ciudad">Ciudad:</label>
+            <InputSelect class="form-control col-6" id="ciudad" @bind-Value="estados.cestaDCompras.clientes.Ciudad">
+                <option value="">Elija la ciudad de procedencia</option>
+                @foreach (var ciudad in NombreCiudades)
+                {
+                    <option value="@ciudad">@ciudad</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => estados.cestaDCompras.clientes.Ciudad)" />
+        </div>
+
+     <div class="row mb-2">
+            <button class="mx-auto w-25 btn btn-success" @onclick="RealizarOrden">Realizar Pedido</button>
+     </div>
+
+ </fieldset>
+</EditForm>
 
 
 
 @code{
-	private Estados estados { get; } = new Estados();
+    private Estados estados { get; } = new Estados();
 
-	protected override void OnInitialized()
-	{
-		estados.Menu.Add(new Pizzas(1, "Peperroni", 8.99M, Picantes.Picante));
-		estados.Menu.Add(new Pizzas(2, "Margarita", 7.99M, Picantes.Nada));
-		estados.Menu.Add(new Pizzas(3, "Diablosa", 9.99M, Picantes.Muy_Picante));
-	}
+    protected override void OnInitialized()
+    {
+        estados.Menu.Add(new Pizzas(1, "Peperroni", 8.99M, Picantes.Picante));
+        estados.Menu.Add(new Pizzas(2, "Margarita", 7.99M, Picantes.Nada));
+        estados.Menu.Add(new Pizzas(3, "Diablosa", 9.99M, Picantes.Muy_Picante));
+    }
+
+    private List<string> NombreCiudades = new List<string>
+    {
+        "Santo Domingo",
+        "Santiago de los Caballeros",
+        "San Francisco de Macorís",
+        "Samaná",
+        "Higüey",
+        "La Romana",
+        "Puerto Plata",
+        "Jarabacoa",
+        "Constanza",
+        "Bonao",
+        "Cotuí",
+        "Sosua",
+        "Cabarete",
+        "Boca Chica",
+        "Barahona",
+        "Baní",
+        "Las Galeras",
+        "Las Terrenas",
+        "Juan Dolio",
+        "Miches"
+    };
 
 	private string PicanteImagenes(Picantes picante) => $"{picante.ToString().ToLower()}.png";
 
-	private void AgregarCesta(Pizzas pizza) => estados.cestaDCompras.Add(pizza.Id);
+	private void AgregarALaCesta(Pizzas pizza) => estados.cestaDCompras.Add(pizza.Id);
 
-	private void RemoverCesta(int pos) => estados.cestaDCompras.RemoveAt(pos);
+	private void RemoverDeLaCesta(int pos) => estados.cestaDCompras.RemoveAt(pos);
 
 	private void RealizarOrden()
 	{

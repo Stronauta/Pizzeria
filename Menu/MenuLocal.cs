@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace PizzeriaPlace.BLL
 {
-    public class MenuBLL
+    public class MenuLocal
     {
         public List<Pizzas> Pizzas { get; set; } = new List<Pizzas>();
         public void Add(Pizzas pizzas) => Pizzas.Add(pizzas);
