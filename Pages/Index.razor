@@ -6,6 +6,66 @@
 	<h1>Menu de Pizzas!</h1>
 </center>
 
+@foreach (var pizza in estados.Menu.Pizzas)
+{
+	<div class="row">
+		<div class="col">
+			@pizza.Nombre
+		</div>
+		<div class="col text-right">@($"{pizza.Precio:0.00}")</div>
+		<div class="col">
+			<img src="@PicanteImagenes(pizza.Picante)" alt="@pizza.Picante" />
+		</div>
+		<div class="col">
+			<button class="btn btn-success pl-4 pr-4"
+			@onclick="@(() => AgregarCesta(pizza))">
+				Ordenar
+			</button>
+		</div>
+	</div>
+}
+
+@if (estados.cestaDCompras.Pedidos.Any())
+{
+    <h2 class="">Orden actual</h2>
+
+    @foreach (var (pizza, pos) in estados.cestaDCompras.Pedidos.Select((id, pos) => (estados.Menu.ObtenerPizzas(id), pos)))
+    {
+        <div class="row mb-2">
+            <div class="col">
+                @pizza?.Nombre
+            </div>
+            <div class="col text-right">
+                @($"{pizza?.Precio:0.00}")
+            </div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col">
+                <button class="btn btn-danger"
+                @onclick="@(() => RemoverCesta(pos))">
+                    Eliminar Pedido
+                </button>
+            </div>
+        </div>
+    }
+    <div class="row">
+        <div class="col"><hr /></div>
+        <div class="col"></div>
+        <div class="col"> </div>
+        <div class="col"> </div>
+    </div>
+    <div class="row">
+        <div class="col"> Total:</div>
+        <div class="col text-right font-weight-bold">
+            $RD @($"{estados.PrecioTotal:0.00}")
+        </div>
+        <div class="col"> </div>
+        <div class="col"> </div>
+        <div class="col"> </div>
+    </div>
+}
+<h5>Favor ingresar los detalles de su orden</h5>
+
 
 
 @code{
@@ -16,5 +76,16 @@
 		estados.Menu.Add(new Pizzas(1, "Peperroni", 8.99M, Picantes.Picante));
 		estados.Menu.Add(new Pizzas(2, "Margarita", 7.99M, Picantes.Nada));
 		estados.Menu.Add(new Pizzas(3, "Diablosa", 9.99M, Picantes.Muy_Picante));
+	}
+
+	private string PicanteImagenes(Picantes picante) => $"{picante.ToString().ToLower()}.png";
+
+	private void AgregarCesta(Pizzas pizza) => estados.cestaDCompras.Add(pizza.Id);
+
+	private void RemoverCesta(int pos) => estados.cestaDCompras.RemoveAt(pos);
+
+	private void RealizarOrden()
+	{
+		Console.WriteLine("Orden Realizada");
 	}
 }
