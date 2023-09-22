@@ -1,9 +1,20 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+<PageTitle>Menu</PageTitle>
 
-<h1>Hello, world!</h1>
+<center>
+	<h1>Menu de Pizzas!</h1>
+</center>
 
-Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+
+@code{
+	private Estados estados { get; } = new Estados();
+
+	protected override void OnInitialized()
+	{
+		estados.Menu.Add(new Pizzas(1, "Peperroni", 8.99M, Picantes.Picante));
+		estados.Menu.Add(new Pizzas(2, "Margarita", 7.99M, Picantes.Nada));
+		estados.Menu.Add(new Pizzas(3, "Diablosa", 9.99M, Picantes.Muy_Picante));
+	}
+}
