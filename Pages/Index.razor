@@ -12,6 +12,13 @@
 		<div class="col">
             <strong>@pizza?.Nombre</strong>
 		</div>
+        <div class="row">
+            <div class="col">
+               <strong>
+                    @pizza?.Despricion
+               </strong> 
+            </div>
+        </div>
 		<div class="col text-right">@($"{pizza.Precio:0.00}")</div>
 		<div class="col">
             <img src="https://i.pinimg.com/236x/5e/5c/06/5e5c06afeed213a39e8e7df49ac263a0.jpg" alt="@pizza.Picante" />
@@ -83,7 +90,7 @@
 
         <div class="row mb-2">
             <label class="col-2" for="ciudad">Ciudad:</label>
-            <InputSelect class="form-control col-6" id="ciudad" @bind-Value="estados.cestaDCompras.clientes.Ciudad">
+            <InputSelect class="form-select" id="ciudad" @bind-Value="estados.cestaDCompras.clientes.Ciudad">
                 <option value="">Elija la ciudad de procedencia</option>
                 @foreach (var ciudad in NombreCiudades)
                 {
@@ -107,9 +114,9 @@
 
     protected override void OnInitialized()
     {
-        estados.Menu.Add(new Pizzas(1, "Peperroni", 8.99M, Picantes.Picante));
-        estados.Menu.Add(new Pizzas(2, "Margarita", 7.99M, Picantes.Nada));
-        estados.Menu.Add(new Pizzas(3, "Diablosa", 9.99M, Picantes.Muy_Picante));
+        estados.Menu.Add(new Pizzas(1, "Peperroni", "Pizza Picante", 450M, Picantes.Picante));
+        estados.Menu.Add(new Pizzas(2, "Margarita", "Pizza No Picante", 300M, Picantes.Nada));
+        estados.Menu.Add(new Pizzas(3, "Diablosa", "Pizza Muy Picante", 500M, Picantes.Muy_Picante));
     }
 
     private List<string> NombreCiudades = new List<string>

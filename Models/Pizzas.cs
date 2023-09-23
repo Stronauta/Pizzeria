@@ -4,14 +4,16 @@
     {
         public int Id { get; }
         public string Nombre { get; }
+        public string Despricion { get; }
         public decimal Precio { get; }
         public Picantes Picante { get; }
-        public Pizzas(int id, string nombre, decimal precio, Picantes picantes)
+        public Pizzas(int Id, string Nombre, string Descricpion,decimal Precio, Picantes Picantes)
         {
-            this.Id = id;
-            this.Nombre = nombre;
-            this.Precio = precio;
-            this.Picante = picantes;
+            this.Id = Id;
+            this.Nombre = Nombre;
+            this.Despricion = Descricpion;
+            this.Precio = Precio;
+            this.Picante = Picantes;
         }
     }
 }
